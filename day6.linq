@@ -5,40 +5,33 @@
 Directory.SetCurrentDirectory(Path.GetDirectoryName(Util.CurrentQueryPath));
 var startIndividualFishTimers = File.ReadAllLines("day6.txt")[0].Split(',').Select(long.Parse).ToArray();
 
-var startFishCountTimers = new long[9];
-var veteranFishCountTimers = new long[7];
-
 // Initialize the first time array with our input.
+var fishCountTimers = new long[9];
 foreach (var timer in startIndividualFishTimers) 
 {
-    veteranFishCountTimers[timer] += 1;
+    fishCountTimers[timer] += 1;
 }
 
-long GetFishCounts(long[] startFishCountTimers, long[] veteranFishCountTimers, int days)
+long GetFishCounts(long[] fishCountTimers, int days)
 {
     for (int day = 0; day < days; day += 1)
     {
-        var startNewBornFish = startFishCountTimers[0];
-        var veteranNewBornFish = veteranFishCountTimers[0];
-        
-        for (var i = 0; i < startFishCountTimers.Length - 1; i += 1)
+        var startNewBornFish = fishCountTimers[0];
+        for (var i = 0; i < fishCountTimers.Length - 1; i += 1)
         {
-            startFishCountTimers[i] = startFishCountTimers[i + 1];
-        }
-                
-        for (var i = 0; i < veteranFishCountTimers.Length - 1; i += 1)
-        {
-            veteranFishCountTimers[i] = veteranFishCountTimers[i + 1];
+            fishCountTimers[i] = fishCountTimers[i + 1];
         }
         
-        startFishCountTimers[^1] = startNewBornFish + veteranNewBornFish;
-        veteranFishCountTimers[^1] = startNewBornFish + veteranNewBornFish;
+        // Add existing fish to current ones at 7 days.
+        fishCountTimers[6] += startNewBornFish;
+        // New born fish get put at 9 days here.
+        fishCountTimers[8] = startNewBornFish;
     }
 
-    return startFishCountTimers.Sum() + veteranFishCountTimers.Sum();
+    return fishCountTimers.Sum();
 }
 
 // Part 1
-Console.WriteLine(GetFishCounts((long[])startFishCountTimers.Clone(), (long[])veteranFishCountTimers.Clone(), 80));
+Console.WriteLine(GetFishCounts((long[])fishCountTimers.Clone(), 80));
 // Part 2
-Console.WriteLine(GetFishCounts((long[])startFishCountTimers.Clone(), (long[])veteranFishCountTimers.Clone(), 256));
+Console.WriteLine(GetFishCounts((long[])fishCountTimers.Clone(), 256));
