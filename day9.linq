@@ -46,11 +46,9 @@ var seenPoints = new HashSet<(int, int)>();
 var basinPoints = new Queue<(int, int)>();
 for (var i = 0; i < lowPointsCoordinates.Count; i += 1)
 {
-    var startPoint = (lowPointsCoordinates[i].Item1, lowPointsCoordinates[i].Item2);
     basinPointHeights[i] = new List<(int, int, int)>();
-    
-    basinPoints.Enqueue(startPoint);
-    seenPoints.Add(startPoint);
+    basinPoints.Enqueue(lowPointsCoordinates[i]);
+    seenPoints.Add(lowPointsCoordinates[i]);
     while (basinPoints.Count > 0) 
     {
         var center = basinPoints.Dequeue();
