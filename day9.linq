@@ -41,18 +41,19 @@ Console.WriteLine(lowPointsCoordinates.Sum(p => 1 + heightMap[p.Item1, p.Item2])
 // Part 2
 // Using the low points we found, determine the actual basin size for each using BFS traversal.
 // Note that we don't include any 9s in any of them which gives us another stopping point.
-var basinPointHeights = new List<(int, int, int)>[lowPointsCoordinates.Count];
+var basinPointHeights = new List<((int, int), int)>[lowPointsCoordinates.Count];
 var seenPoints = new HashSet<(int, int)>();
 var basinPoints = new Queue<(int, int)>();
+
 for (var i = 0; i < lowPointsCoordinates.Count; i += 1)
 {
-    basinPointHeights[i] = new List<(int, int, int)>();
+    basinPointHeights[i] = new List<((int, int), int)>();
     basinPoints.Enqueue(lowPointsCoordinates[i]);
     seenPoints.Add(lowPointsCoordinates[i]);
-    while (basinPoints.Count > 0) 
+   
+	while (basinPoints.TryDequeue(out var center)) 
     {
-        var center = basinPoints.Dequeue();
-        basinPointHeights[i].Add((center.Item1, center.Item2, heightMap[center.Item1, center.Item2]));
+        basinPointHeights[i].Add((center, heightMap[center.Item1, center.Item2]));
         
         var neighbours = GetNeighbours(heightMap, center.Item1, center.Item2)
                          .Where(p => !seenPoints.Contains(p) && 
