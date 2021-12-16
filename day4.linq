@@ -122,13 +122,12 @@ class BingoCard
     {
         // Check all possible columns and rows by just going
         // down the diagonal entries.
-        var hasBingo = false;
         for (int i = 0; i < 5; i += 1)
         {
-            hasBingo |= HasBingo((i, i));
+            if (HasBingo((i, i))) return true;
         }
 
-        return hasBingo;
+        return false;
     }
 
     public bool HasBingo((int, int) location) 
