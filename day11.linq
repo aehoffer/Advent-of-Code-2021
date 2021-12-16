@@ -40,10 +40,11 @@ int StepAndGetFlashCounts(int[,] octopuses)
     {
         for (var j = 0; j < lines[0].Length; j += 1)
         {
-            octopuses[i, j] = (octopuses[i, j] + 1) % 10;
-            if (octopuses[i, j] == 0) 
+            octopuses[i, j] += 1;
+            if (octopuses[i, j] > 9) 
             {
                 seenOctopusFlashes.Add((i, j));
+                octopuses[i, j] = 0;
             }
         }
     }
@@ -60,11 +61,12 @@ int StepAndGetFlashCounts(int[,] octopuses)
         
         foreach (var n in neighbours)
         {
-            octopuses[n.Item1, n.Item2] = (octopuses[n.Item1, n.Item2] + 1) % 10;
-            if (octopuses[n.Item1, n.Item2] == 0)
+            octopuses[n.Item1, n.Item2] += 1;
+            if (octopuses[n.Item1, n.Item2] > 9)
             {
                 seenOctopusFlashes.Add(n);
                 currentFlashes.Enqueue(n);
+                octopuses[n.Item1, n.Item2] = 0;
             }
         }
     }
